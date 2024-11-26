@@ -34,8 +34,25 @@ A Blank Document opens up into which the following source code can be typed down
 
 ## Source Code – Using Case Statement :
 
-(Include program here)
-
+module alu_32bit_case(y,a,b,f);
+input [31:0]a; 
+input [31:0]b;
+input [2:0]f; 
+output reg [31:0]y;
+always@(*)
+begin
+case(f)
+3'b000:y=a&b; //AND Operation
+3'b001:y=a|b; //OR Operation
+3'b010:y=~(a&b); //NAND Operation
+3'b011:y=~(a|b); //NOR Operation
+3'b100:y=a+b; //Addition
+3'b101:y=a-b; //Subtraction
+3'b110:y=a*b; //Multiply
+default:y=32'bx;
+endcase
+end
+endmodule
 Use Save option or Ctrl+S to save the code or click on the save option from the top most right corner and close the text file.
 
 ## Creating Test bench:
@@ -44,7 +61,24 @@ Similarly, create your test bench using gedit <filename_tb>.v or <filename_tb>.v
 
 ## Test Bench :
 
-(Include test bench program here)
+
+module alu_32bit_tb_case; reg [31:0]a;
+regm [31:0]b;
+reg [2:0]f; 
+wire [31:0]y;
+alu_32bit_case test2(.y(y),.a(a),.b(b),.f(f));
+initial
+begin
+a=32'h00000000; b=32'hFFFFFFFF; #10 f=3'b000;
+#10 f-3'b001;
+#10 f=3'b010;
+#10 f-3'b011;
+#10 f=3'b100;
+#10 f=3'b101;
+#10 f=3'b110;
+#10; $stop;
+end
+endmodule
 
 Use Save option or Ctrl+S to save the code or click on the save option from the top most right corner and close the text file.
 
@@ -59,6 +93,7 @@ source /cadence/install/cshrc (mention the path of the tools)
 (The path of cshrc could vary depending on the installation destination)
       
 After this you can see the window like below 
+![image](https://github.com/user-attachments/assets/f393fa6b-d832-40b2-8507-f35a56011416)
 
 ### Fig 2: Invoke the Cadence Environment
 
@@ -72,12 +107,14 @@ or
 
 
 It will invoke the nclaunch window for functional simulation we can compile,elaborate and simulate it using Multiple Step .
+![image](https://github.com/user-attachments/assets/8dad7505-5ff0-48e8-b301-6b09ff5d59d9)
 
 ### Fig 3: Setting Multi-step simulation
 
 Select Multiple Step and then select “Create cds.lib File” as shown in below figure 
 
 Click the cds.lib file and save the file by clicking on Save option 
+![image](https://github.com/user-attachments/assets/81346683-8c99-433e-9bb1-e1d60a802728)
 
 ### Fig 4:cds.lib file Creation
 
@@ -89,7 +126,8 @@ We are simulating verilog design without using any libraries
 
 A Click “OK” in the “nclaunch: Open Design Directory” window as shown in below figure 
 
-![image](https://github.com/user-attachments/assets/d5202b97-ee5c-4e0e-9eaf-5f3fa733e546)
+![image](https://github.com/user-attachments/assets/349641ed-9bfb-4170-80eb-8e2bfc28d753)
+
 
 ### Fig 5: Selection of Don’t include any libraries
 
@@ -100,6 +138,7 @@ Left side you can see the HDL files. Right side of the window has worklib and sn
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation .
 
 To perform the function simulation, the following three steps are involved Compilation, Elaboration and Simulation. 
+![image](https://github.com/user-attachments/assets/64f0ada1-c3f3-4da8-92e4-ca3136789e1e)
 
 ### Fig 6: Nclaunch Window
 
@@ -124,6 +163,7 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 Left side select the file and in Tools : launch verilog compiler with current selection will get enable. Click it to compile the code 
 
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation 
+![image](https://github.com/user-attachments/assets/032806b0-155a-4850-a27c-6686d1f44eed)
 
 ### Fig 7: Compiled database in worklib
 
@@ -158,6 +198,7 @@ Outputs: Elaborate database updated in mapped library if successful, generates r
 5.It also establishes net connectivity and prepares all of this for simulation
 
 After elaboration the file will come under snapshot. Select the test bench and simulate it.
+![image](https://github.com/user-attachments/assets/431924e3-1698-49c2-8f1c-2d646ded2be8)
 
 ## Fig 8: Elaboration Launch Option
 
@@ -172,10 +213,13 @@ Outputs: Simulation log file, waveforms for debugging
 Simulation allow to dump design and test bench signals into a waveform 
 
 Steps for simulation – Run the simulation command with simulator options
+![image](https://github.com/user-attachments/assets/37a35843-edbe-4afa-8d41-76574d016ef8)
 
 ## Fig 9: Design Browser window for simulation
+![image](https://github.com/user-attachments/assets/091d7612-aaa5-4334-857c-78cf65bf7380)
 
 ## Fig 10:Simulation Waveform Window
+![image](https://github.com/user-attachments/assets/d2317eb7-c44d-41d5-a791-2779f95d4178)
 
 ## Fig 11:Simulation Waveform Window
 
